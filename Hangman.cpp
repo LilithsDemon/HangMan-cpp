@@ -90,15 +90,109 @@ std::string pickWord(int difficulty)
     return words[randNum];
 }
 
-int newGuess()
+std::string convertString(std::string word, std::vector<std::string> &guessed_letters)
 {
-    std::cout << "Nothing for now";
+    std::string output = "";
+    bool found_letter = false;
+    for(int i = 0; i < word.length(); i++)
+    {
+        found_letter = false;
+        if (guessed_letters.size() == 0)
+        {
+            output += "_";
+        }
+        else
+        {
+            for(int j = 0; j < guessed_letters.size(); j++)
+            {
+                if (guessed_letters[j][0] == word[i])
+                {
+                    found_letter = true;
+                    break;
+                }                
+            }
+            if(found_letter == false)
+            {
+                output += "_";
+            }
+            else
+            {
+                output += word[i];
+            }
+        }
+    }
+    return output;
 }
 
-void playGame(std::string word_to_guess)
+bool letterInWord(std::string letter, std::string word)
 {
-    std::cout << "\n" << word_to_guess << "\n";
-    std::vector<std::string> gussed_letters;
+    bool found = false;
+    for (int i = 0; i < word.length(); i++)
+    {
+        if (letter[0] == word[i])
+        {
+            found = true;
+        }
+    }
+    return found;
+}
+
+void playGame(std::string word_to_guess, int lives)
+{
+    std::vector<std::string> guessed_letters;
+    std::string letter_guess = "";
+    bool already_guessed = false;
+    bool dead = false;
+    bool word_found = false;
+    
+    while (true)
+    {
+        if (lives == 0)
+        {
+            dead = true;
+            break;
+        }
+        already_guessed = false;
+        std::cout << "Word so far: ";
+        std::cout << convertString(word_to_guess, guessed_letters) << "\n";
+        std::cout << "Lives Left: " << lives << "\n";
+        std::cout << "Letters Guessed so far: ";
+        for(auto letter : guessed_letters)
+        {
+            std::cout << letter << ", ";
+        }
+        std::cout << "\n\n" << "What letter would you like to guess: ";
+        std::cin >> letter_guess;
+        for(auto letter: guessed_letters)
+        {
+            if (letter_guess == letter)
+            {
+                std::cout << "\nYou have already selected this letter please try again\n";
+                already_guessed = true;
+            }
+        }
+        guessed_letters.push_back(letter_guess);
+        if(letterInWord(letter_guess, word_to_guess) == true)
+        {
+            std::cout << "\nThat letter is in the word, well done\n\n";
+            std::string current_string = convertString(word_to_guess, guessed_letters);
+            word_found = true;
+            for (int i = 0; i < current_string.length(); i++)
+            {
+                if(current_string[i] == "_")
+                {
+                    word_found = false;
+                }
+            }
+            std::cout << "Well done, you got the word: " << word_to_guess
+                      << " you won with " << lives << ": lives left\n";
+        }
+        else
+        {
+            std::cout << "\nThat letter is not in the word \n\n";
+            lives--;
+        }
+    }
 }
 
 int main()
@@ -117,21 +211,21 @@ int main()
             {
                 std::cout << "\nOption 1 chosen\n";
                 word = pickWord(option);
-                playGame(word);
+                playGame(word, 8);
                 break;
             }
             case 2:
             {
                 std::cout << "\nOption 2 chosen\n";
                 word = pickWord(option);
-                playGame(word);
+                playGame(word, 6);
                 break;
             }
             case 3:
             {
                 std::cout << "\nOption 3 chosen\n";
                 word = pickWord(option);
-                playGame(word);
+                playGame(word, 4);
                 break;
             }
             case 4:
