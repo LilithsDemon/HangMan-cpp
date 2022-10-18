@@ -6,13 +6,13 @@ Made for midterm assesement
 
 In this project there are 3 difficulties
 
-Easy:
+* Easy:
     * 8 lives
     * "apple", "car", "cheese", "cold", "wave", "boat", "heal", "four"
-Medium:
+* Medium:
     * 6 lives
     * "chosen", "fisherman", "attention", "pixel", "zombie", "rhythm", "jumper", "jogger"
-Hard:
+* Hard:
     * 4 lives
     * "crypt", "embezzle", "voodoo", "oxidize", "wyvern", "sphinx", "hazard", "blizzard"
 
